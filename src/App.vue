@@ -9,10 +9,25 @@
 </template>
 
 <script>
+  //使用映射函数
+  import {mapActions} from 'vuex'
+
   import FootGuide from './components/FootGuide/FootGuide'
+
+  //引入接口请求函数
+  //import {reqFoodsCategorys} from './api'
 
   export default {
     name: "App",
+    mounted () {
+      //触发某个actions的调用
+      //this.$store.dispatch('getAddress')
+      this.getAddress()
+    },
+    methods: {
+      //在method中使用映射函数  此处等价于this.$store.dispatch('getAddress')
+      ...mapActions(['getAddress'])
+    },
     components: {
       FootGuide
     }
