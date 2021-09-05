@@ -1,5 +1,5 @@
 // Ajax请求函数模块
-// 返回值：Promise对象（异步返回的数据是response.data而不是response）
+// 返回值：Promise对象（异步返回的数据是response.data而不是response） 
 
 //使用axios发送请求
 import axios from 'axios'

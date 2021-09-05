@@ -3,7 +3,7 @@
     <!-- 加入v-if判断当数据还没加载完成时显示图片shop_back.svg -->
     <div class="shop_container" v-if="shops.length">
       <ul class="shop_list">
-        <li class="shop_li border-1px" v-for="(shop, index) in shops" :key="index">
+        <li class="shop_li border-1px" v-for="(shop, index) in shops" :key="index" @click="$router.push('/shop')">
           <a>
             <div class="shop_left">
               <img class="shop_img" src="./images/shop/2.jpg">

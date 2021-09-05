@@ -50,9 +50,9 @@
         解决ajax的跨越域问题: 配置代理, 对代理的理解
     vuex编码
         创建所有相关的模块: store/index|state|mutations|actions|getters|mutation-types
-        设计state: 从后台获取的数据
+        设计state: 从后台获取的数据 所有从后台获取的数据基本上都会放到state中
         实现actions: 
-            定义异步action: async/await
+            定义异步action: async/await 
             流程:　发ajax获取数据, commit给mutation
         实现mutations: 给状态赋值
         实现index: 创建store对象
@@ -74,15 +74,15 @@
     		
 ## 2. 登陆/注册: 界面相关效果
     a. 切换登陆方式
-    b. 手机号合法检查
-    c. 倒计时效果
-    d. 切换显示或隐藏密码
+    b. 手机号合法检查（正则以及计算属性）
+    c. 倒计时效果（循环定时器）
+    d. 切换显示或隐藏密码（两个输入框：text和password）
     g. 前台验证提示
     
 ## 3. 前后台交互相关问题
     1). 如何查看你的应用是否发送某个ajax请求?  
         浏览器的network
-    2). 发ajax请求404
+    2). 发ajax请求404（404：请求的数据没有被处理、请求的资源不存在）
         请求的路径的对
         代理是否生效(配置和重启)
         服务器应用是否运行

@@ -45,7 +45,7 @@
                 </section>
                 <section class="login_message">
                   <input type="text" maxlength="11" placeholder="验证码" v-model="captcha">
-                  <img class="get_verification" src="./images/captcha.svg" alt="captcha">
+                  <img class="get_verification" src="http://localhost:4000/captcha" alt="captcha" @click="getCaptcha" ref="captcha">
                 </section>
               </section>
             </div>
@@ -66,6 +66,8 @@
 
 <script>
   import AlertTip from '../../components/AlertTip/AlertTip'
+  import {reqSendCode, reqSmsLogin, reqPwdLogin} from '../../api'
+  import {Toast} from 'mint-ui'
 
   export default {
     name: "Login",
@@ -96,20 +98,32 @@
     },
     methods: {
       //异步获取短信验证码
-      getCode() {
+      async getCode() {
         //如果当前没有计时
         if (!this.computeTime) {
           //启动倒计时
           this.computeTime = 59
+          //toast显示已发送验证码
+          Toast('已发送验证码')
           //循环定时器
-          const intervalId = setInterval(() => {
+          this.intervalId = setInterval(() => {
             this.computeTime--
             if(this.computeTime<=0){
               //当时间小于等于0时停止计时
-              clearInterval(intervalId)
+              clearInterval(this.intervalId)
             }
           }, 1000)
           //发送ajax请求（向指定手机号发送短信验证码）
+          const result = await reqSendCode(this.phone)
+          if(result.code===1){
+            //显示提示短信验证码不正确
+            this.showAlert(result.msg)
+            //停止计时
+            if(this.computeTime){
+              this.computeTime = 0
+              clearInterval(this.intervalId)
+            }
+          }
         }
       },
       showAlert(alertText) {
@@ -117,7 +131,8 @@
         this.alertText = alertText
       },
       //异步登录
-      login(){
+      async login(){
+        let result
         //前台表单验证
         if(this.loginWay) {//短信登录
           //需要验证的内容是手机号和短信验证码
@@ -125,30 +140,68 @@
           if (!this.rightPhone) {
             //手机号码不规范
             this.showAlert('手机号码不规范')
+            return
           }else if(!/^\d{6}$/.test(code)) {
             //验证码不正确
             this.showAlert('验证码不正确')
+            return
           }
-
+          //发送ajax请求短信登录
+          result = await reqSmsLogin(phone, code)
+         
         }else {//密码登录
           //需要验证的内容是用户名、密码、图形验证码
           const {name, pwd, captcha} = this
           if (!this.name) {
             //用户名不正确
             this.showAlert('用户名不正确')
+            return
           }else if(!this.pwd) {
             //密码不正确
             this.showAlert('密码不正确')
+            return
           }else if(!this.captcha) {
             //验证码不正确
             this.showAlert('验证码不正确')
+            return
           }
+          // 发送ajax请求密码登录
+          result = await reqPwdLogin({name, pwd, captcha})
+        }
+
+        //停止计时
+        if(this.computeTime){
+          this.computeTime = 0
+          clearInterval(this.intervalId)
+        }
+
+        //根据结果数据处理
+        if(result.code===0) {
+          //成功的情况
+          const user = result.data
+          //将user保存到vuex的state中
+          this.$store.dispatch('recordUser', user)
+          //去个人中心界面
+          this.$router.replace('/profile')
+
+        }else {
+          //失败的情况
+          const msg = result.msg
+          //更新图片验证码
+          this.getCaptcha()
+          //弹出提示框
+          this.showAlert(msg)
         }
       },
       //当登录信息有误时弹出窗口的关闭
       closeTip() {
         this.alertShow = false
         this.alertText = ''
+      },
+      //获取新的图片验证码
+      getCaptcha() {
+        //需要每次指定的src值不一样  此处在原有的值后面加上当前时间
+        this.$refs.captcha.src = 'http://localhost:4000/captcha?time=' + Date.now()
       }
     }
   }

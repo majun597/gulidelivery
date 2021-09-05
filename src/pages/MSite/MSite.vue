@@ -5,12 +5,15 @@
     <section class="msite">
       <!-- 首页头部 -->
       <header-top :title="address.name">
-        <span class="header_search" slot="left">
+        <router-link class="header_search" slot="left" to="/search">
           <i class="iconfont icon-sousuo"></i>
-        </span>
-        <span class="header_login" slot="right">
-           <span class="header_login_text">登录|注册</span>
-        </span>
+        </router-link>
+        <router-link class="header_login" slot="right" :to="userInfo._id ? '/userinfo' : '/login'">
+           <!-- 未登录则显示登录注册 -->
+           <span class="header_login_text" v-if="!userInfo._id">登录|注册</span>
+           <!-- 已登录显示图标 -->
+           <span class="header_login_text" v-else><i class="iconfont icon-person"></i></span>
+        </router-link>
       </header-top>
       <!--首页导航-->
       <nav class="msite_nav">
@@ -106,7 +109,7 @@
     },
     computed: {
       //此处使用mapstate函数 读取数据
-      ...mapState(['address', 'categorys']),
+      ...mapState(['address', 'categorys', 'userInfo']),
 
       //根据categorys一维数组生成一个二维数组  小数组中的元素个数最大是8 轮播图内的数据显示问题
       categorysArr() {

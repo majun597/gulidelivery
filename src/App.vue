@@ -23,10 +23,11 @@
       //触发某个actions的调用
       //this.$store.dispatch('getAddress')
       this.getAddress()
+      this.getUserInfo()
     },
     methods: {
       //在method中使用映射函数  此处等价于this.$store.dispatch('getAddress')
-      ...mapActions(['getAddress'])
+      ...mapActions(['getAddress', 'getUserInfo'])
     },
     components: {
       FootGuide
