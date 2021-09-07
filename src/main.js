@@ -9,6 +9,9 @@ import store from './store'
 
 import { Button } from 'mint-ui'
 
+//加载mockServer
+import './mock/mockServer'
+
 //注册全局组件标签
 Vue.component(Button.name, Button) //也即此时有一个全局组件标签<mt-button>可以使用
 
