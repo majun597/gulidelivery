@@ -3,9 +3,9 @@
     <!-- 动态强制绑定背景图片  模板字符串(Template String)是增强版的字符串，用反引号(`)标识-->
     <nav class="shop-nav" :style="{backgroundImage: `url(${info.bgImg})`}">
       <!-- 使用路由进行页面前进时，路由会向 history 栈添加一个新的记录，所以，当用户点击$router.back()后退按钮时，则回到之前的 URL。 -->
-      <a class="back" @click="$router.back()">
+      <router-link to="/MSite" class="back" @click="$router.back()">
         <i class="iconfont icon-arrow_left"></i>
-      </a>
+      </router-link>
     </nav>
     <div class="shop-content" @click="toggleShopShow">
       <img class="content-image" :src="info.avatar">
