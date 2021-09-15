@@ -19,6 +19,7 @@
           </div>
         </div>
       </div>
+      <!-- 给购物车添加滑动效果 -->
       <transition name="move">
         <div class="shopcart-list" v-show="listShow">
           <div class="list-header">
@@ -45,6 +46,8 @@
 </template>
 
 <script>
+import {MessageBox} from 'mint-ui'
+import BScroll from 'better-scroll'
 import { mapState, mapGetters } from 'vuex'
 import CartControl from '../CartControl/CartControl'
 
@@ -91,14 +94,13 @@ import CartControl from '../CartControl/CartControl'
         if(this.isShow) {
           this.$nextTick(() => {
             // 实现BScroll的实例是一个单例
-            if(!this.scroll) {
+            if(!this.scroll) {//先判断是否已经存在scroll实例  不存在就创建一个scroll实例并保存起来
               this.scroll = new BScroll('.list-content', {
                 click: true
               })
             } else {
               this.scroll.refresh() // 让滚动条刷新一下: 重新统计内容的高度
             }
-
           })
         }
 
@@ -230,6 +232,7 @@ import CartControl from '../CartControl/CartControl'
       top 0
       z-index -1
       width 100%
+      //向上移动百分百的距离
       transform translateY(-100%)
       &.move-enter-active, &.move-leave-active
         transition transform .3s
