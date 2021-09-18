@@ -8,12 +8,19 @@ import router from './router'
 import store from './store'
 
 import { Button } from 'mint-ui'
+import VueLazyload from 'vue-lazyload'
 
 //加载mockServer
 import './mock/mockServer'
 
+import loading from './common/imgs/loading.gif'
+import './fiters' //加载过滤器
+
 //注册全局组件标签
 Vue.component(Button.name, Button) //也即此时有一个全局组件标签<mt-button>可以使用
+Vue.use(VueLazyload, {
+    loading
+})
 
 new Vue({
     el: '#app',
